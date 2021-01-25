@@ -1,0 +1,1 @@
+option('static_modules', type: 'boolean', value: true)
