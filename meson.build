@@ -1,6 +1,6 @@
 project('wlx', 'c',
   version: '0.0.1',
-  license: 'MIT',
+  license: 'GPL-2.0-only',
   default_options: [
     'c_std=c17',
     'warning_level=3',
