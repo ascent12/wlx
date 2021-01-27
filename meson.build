@@ -7,6 +7,8 @@ project('wlx', 'c',
   ],
 )
 
+cc = meson.get_compiler('c')
+
 c_args = [
   '-Wno-unused-parameter',
   '-D_POSIX_C_SOURCE=200809L',
@@ -17,6 +19,7 @@ dbus_dep = dependency('dbus-1')
 libevent_dep = dependency('libevent_core')
 libinput_dep = dependency('libinput')
 udev_dep = dependency('libudev')
+rt_dep = cc.find_library('rt', required: false)
 
 conf = configuration_data()
 # Not implemented yet
@@ -61,6 +64,14 @@ wlx_libevent_lib = library('wlx-libevent', 'libevent.c', conf_h,
 wlx_libevent_dep = declare_dependency(
   link_with: wlx_libevent_lib,
   include_directories: wlx_inc,
+)
+
+# Uses some of our static inline util functions, but doesn't actually need to
+# link to wlx
+executable('wlx-launch', 'wlx-launch.c',
+  dependencies: [rt_dep],
+  include_directories: wlx_inc,
+  install: true,
 )
 
 executable('wlx_test', 'test.c',
